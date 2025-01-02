@@ -1,0 +1,27 @@
+-- pastebin run U9YpPTMy
+local client_manifest = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/client.manifest"
+local server_manifest = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server.manifest"
+
+local args = { ... }
+local manifest
+if args[1] == "client" then
+    manifest = client_manifest
+elseif args[1] == "server" then
+    manifest = server_manifest
+else
+    error("must pass 'client' or 'server' as first arg")
+end
+
+local files = textutils.unserialise(manifest)
+
+local auth_dir = shell.resolve("./auth")
+if not fs.isDir(auth_dir) then
+    fs.makeDir(auth_dir)
+end
+shell.setDir(auth_dir)
+for k, f in pairs(files) do
+    if fs.exists(shell.resolve("./" .. k .. ".lua")) then
+        fs.delete(shell.resolve("./" .. k .. ".lua"))
+    end
+    shell.run("wget", f)
+end

@@ -1,7 +1,7 @@
 local utils = require("utils")
 
-local client_paste = "pastebin run XHid4qpU"
-local server_paste = "pastebin run xuyJAtBv"
+local client_paste = "pastebin run fzitTRe0 client"
+local server_paste = "pastebin run fzitTRe0 server"
 local version_file = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/version"
 local update_check = function(is_client)
     print("checking for updates")

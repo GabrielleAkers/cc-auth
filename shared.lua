@@ -1,5 +1,7 @@
 local utils = require("utils")
 
+local client_paste = "pastebin run XHid4qpU"
+local server_paste = "pastebin run xuyJAtBv"
 local version_file = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/version"
 local update_check = function(is_client)
     print("checking for updates")
@@ -22,9 +24,9 @@ local update_check = function(is_client)
             fs.move(pwd, shell.resolve("../_auth"))
             shell.setDir(shell.resolve(".."))
             if is_client then
-                shell.run("pastebin run RFGYnp5J")
+                shell.run(client_paste)
             else
-                shell.run("pastebin run KGxmMfx9")
+                shell.run(server_paste)
                 if fs.isDir(shell.resolve("../_auth/persistence")) then
                     fs.move(shell.resolve("../_auth/persistence"), shell.resolve("."))
                 end
@@ -33,9 +35,9 @@ local update_check = function(is_client)
         else
             shell.setDir(shell.resolve("/"))
             if is_client then
-                shell.run("pastebin run RFGYnp5J")
+                shell.run(client_paste)
             else
-                shell.run("pastebin run KGxmMfx9")
+                shell.run(server_paste)
                 if fs.isDir(shell.resolve(pwd .. "/persistence")) then
                     fs.move(shell.resolve(pwd .. "/persistence"), shell.resolve("."))
                     fs.delete(shell.resolve(pwd .. "/persistence"))

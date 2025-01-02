@@ -34,13 +34,16 @@ local update_check = function(is_client)
                 shell.run("pastebin run RFGYnp5J")
             else
                 shell.run("pastebin run KGxmMfx9")
-                fs.move(shell.resolve(pwd .. "/persistence"), shell.resolve("."))
-                fs.delete(shell.resolve(pwd .. "/persistence"))
+                if fs.isDir(shell.resolve(pwd .. "/persistence")) then
+                    fs.move(shell.resolve(pwd .. "/persistence"), shell.resolve("."))
+                    fs.delete(shell.resolve(pwd .. "/persistence"))
+                end
             end
         end
         local f = fs.open(check_file, "w+")
         f.write(version)
         f.close()
+        print("update done")
     else
         print("no update needed")
     end

@@ -17,6 +17,7 @@ shell.run("wget", manifest, "manifest")
 local file = fs.open(shell.resolve("./manifest"), "r")
 manifest = file.readAll()
 file.close()
+fs.delete(shell.resolve("./manifest"))
 local files = textutils.unserialise(manifest)
 
 local auth_dir = shell.resolve("./auth")

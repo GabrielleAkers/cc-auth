@@ -1,6 +1,6 @@
 local utils = require("utils")
 
-local version_file = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/.version"
+local version_file = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/version"
 local update_check = function(is_client)
     print("checking for updates")
     local version = http.get(version_file).readLine()

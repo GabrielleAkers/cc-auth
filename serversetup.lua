@@ -1,4 +1,4 @@
--- pastebin run H7xctA3Q
+-- pastebin run KGxmMfx9
 local client_files = {
     "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server.lua",
     "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/deque.lua",
@@ -15,5 +15,3 @@ shell.setDir(auth_dir)
 for _, f in pairs(client_files) do
     shell.run("wget", f)
 end
-
-shell.run("server.lua")

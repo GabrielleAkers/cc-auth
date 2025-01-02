@@ -1,5 +1,54 @@
 local utils = require("utils")
 
+local version_file = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/.version"
+local update_check = function(is_client)
+    print("checking for updates")
+    local version = http.get(version_file).readLine()
+    local check_file = shell.resolve("./.version")
+    local need_update = false
+    if not fs.exists(check_file) then
+        local f = fs.open(check_file, "w")
+        f.write(version)
+        f.close()
+        need_update = true
+    else
+        local f = fs.open(check_file, "r")
+        if f.readLine() ~= version then
+            need_update = true
+        end
+        f.close()
+        f = fs.open(check_file, "w+")
+        f.write(version)
+        f.close()
+    end
+    if need_update then
+        print("need to update")
+        local pwd = shell.dir()
+        if string.find(pwd, "/auth") then
+            fs.move(pwd, shell.resolve("../_auth"))
+            shell.setDir(shell.resolve(".."))
+            if is_client then
+                shell.run("pastebin run RFGYnp5J")
+            else
+                shell.run("pastebin run KGxmMfx9")
+                fs.move(shell.resolve("../_auth/persistence"), shell.resolve("."))
+            end
+            fs.delete(shell.resolve("../_auth"))
+        else
+            shell.setDir(shell.resolve("/"))
+            if is_client then
+                shell.run("pastebin run RFGYnp5J")
+            else
+                shell.run("pastebin run KGxmMfx9")
+                fs.move(shell.resolve(pwd .. "/persistence"), shell.resolve("."))
+                fs.delete(shell.resolve(pwd .. "/persistence"))
+            end
+        end
+    else
+        print("no update needed")
+    end
+end
+
 local tw, th = term.getSize()
 
 local protocol = "auth"
@@ -57,7 +106,11 @@ local events = {
     send_identity = "identity|",
     session_timeout = "session_timeout|",
     refresh_session = "refresh_session|",
-    invalid_token = "invalid_token|"
+    invalid_token = "invalid_token|",
+    valid_token = "valid_token|",
+    check_token = "check_token|",
+    user_doesnt_exist = "user_doesnt_exist|",
+    logout = "logout|"
 }
 
 local events_valuemapped = {}
@@ -75,6 +128,7 @@ if not rednet.isOpen() then
 end
 
 return {
+    update_check = update_check,
     protocol = protocol,
     domain = domain,
     server_utc_hour_offset = server_utc_hour_offset,

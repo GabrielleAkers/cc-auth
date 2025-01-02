@@ -2,6 +2,8 @@ local shared = require("shared")
 local sha = require("sha")
 local events = shared.events
 
+shared.update_check(false)
+
 local lib_paths = {
     ["deque"] = "https://raw.githubusercontent.com/catwell/cw-lua/refs/heads/master/deque/deque.lua",
 }
@@ -37,7 +39,7 @@ local process_os_events = function()
     end
 end
 
-local identities
+local identities, hashes
 
 local write_to_disk = function(file)
     local backups_dir = shell.resolve("./persistence")
@@ -140,7 +142,7 @@ local handle_refresh_session = function(evt)
         return shared.send_msg(events.session_timeout, {}, evt.sender)
     end
 
-    if identity.token ~= evt.data.token then
+    if identities[evt.data.user].token ~= evt.data.token then
         log("invalid token for " .. evt.data.user)
         batch_update_identity(evt.data.user, {
             token = nil
@@ -152,10 +154,51 @@ local handle_refresh_session = function(evt)
     shared.send_msg(events.send_identity, identities[evt.data.user], evt.sender)
 end
 
+local handle_check_token = function(evt)
+    log("check token for " .. evt.data.user)
+
+    if not identities[evt.data.user] then
+        log("user doesnt exist " .. evt.data.user)
+        return shared.send_msg(events.user_doesnt_exist, {}, evt.sender)
+    else
+        if identities[evt.data.user].token ~= evt.data.token then
+            log("invalid token for " .. evt.data.user)
+            return shared.send_msg(events.invalid_token, {}, evt.sender)
+        end
+
+        if os.epoch("utc") - identities[evt.data.user].last_login > shared.session_length then
+            log("stale session for " .. evt.data.user)
+            return shared.send_msg(events.invalid_token, {}, evt.sender)
+        end
+
+        shared.send_msg(events.valid_token, {}, evt.sender)
+    end
+end
+
+local handle_logout = function(evt)
+    log("logout for " .. evt.data.user)
+
+    if not identities[evt.data.user] then
+        log("user doesnt exist " .. evt.data.user)
+        return
+    end
+
+    if identities[evt.data.user].token ~= evt.data.token then
+        log("invalid token for " .. evt.data.user)
+        return
+    end
+
+    batch_update_identity(evt.data.user, {
+        token = nil,
+    })
+end
+
 local event_handlers = {
     [events.login] = handle_login,
     [events.update_info] = handle_update_info,
-    [events.refresh_session] = handle_refresh_session
+    [events.refresh_session] = handle_refresh_session,
+    [events.check_token] = handle_check_token,
+    [events.logout] = handle_logout
 }
 
 local process_events = function()

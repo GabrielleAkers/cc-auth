@@ -1,4 +1,4 @@
--- pastebin run U9YpPTMy
+-- pastebin run SbSdvnZN
 local client_manifest = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/client.manifest"
 local server_manifest = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server.manifest"
 
@@ -9,9 +9,14 @@ if args[1] == "client" then
 elseif args[1] == "server" then
     manifest = server_manifest
 else
+    print(textutils.serialise(args))
     error("must pass 'client' or 'server' as first arg")
 end
 
+shell.run("wget", manifest, "manifest")
+local file = fs.open(shell.resolve("./manifest"), "r")
+manifest = file.readAll()
+file.close()
 local files = textutils.unserialise(manifest)
 
 local auth_dir = shell.resolve("./auth")

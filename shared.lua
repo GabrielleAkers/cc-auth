@@ -25,7 +25,9 @@ local update_check = function(is_client)
                 shell.run("pastebin run RFGYnp5J")
             else
                 shell.run("pastebin run KGxmMfx9")
-                fs.move(shell.resolve("../_auth/persistence"), shell.resolve("."))
+                if fs.isDir(shell.resolve("../_auth/persistence")) then
+                    fs.move(shell.resolve("../_auth/persistence"), shell.resolve("."))
+                end
             end
             fs.delete(shell.resolve("../_auth"))
         else

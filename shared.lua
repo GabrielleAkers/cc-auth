@@ -7,18 +7,12 @@ local update_check = function(is_client)
     local check_file = shell.resolve("./.version")
     local need_update = false
     if not fs.exists(check_file) then
-        local f = fs.open(check_file, "w")
-        f.write(version)
-        f.close()
         need_update = true
     else
         local f = fs.open(check_file, "r")
         if f.readLine() ~= version then
             need_update = true
         end
-        f.close()
-        f = fs.open(check_file, "w+")
-        f.write(version)
         f.close()
     end
     if need_update then
@@ -44,6 +38,9 @@ local update_check = function(is_client)
                 fs.delete(shell.resolve(pwd .. "/persistence"))
             end
         end
+        local f = fs.open(check_file, "w+")
+        f.write(version)
+        f.close()
     else
         print("no update needed")
     end

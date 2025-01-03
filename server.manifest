@@ -1,7 +1,7 @@
 {
-  utils = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server_utils.lua",
+  utils = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_utils.lua",
   deque = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/deque.lua",
-  sha = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server_sha.lua",
-  shared = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server_shared.lua",
-  server = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/server_server.lua",
+  sha = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_sha.lua",
+  shared = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_shared.lua",
+  server = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_server.lua",
 }

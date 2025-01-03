@@ -100,15 +100,7 @@ end
 
 local logout = function(user, token)
     shared.send_msg(events.logout, { user = user, token = token }, server_id)
-    local id, msg = rednet.receive(shared.protocol, timeout)
-    if not id then
-        return error("logout timeout")
-    end
-    if id == server_id then
-        local logout_msg = shared.parse_msg({ [3] = msg, [2] = id })
-        identity = nil
-    end
-    return error("logout failed")
+    identity = nil
 end
 
 local get_identity = function()

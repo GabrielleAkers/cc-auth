@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = require("auth_utils")
 
 local client_paste = "pastebin run SbSdvnZN client"
 local server_paste = "pastebin run SbSdvnZN server"

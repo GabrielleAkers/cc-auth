@@ -1,5 +1,5 @@
-local shared = require("shared")
-local sha = require("sha")
+local shared = require("auth_shared")
+local sha = require("auth_sha")
 local events = shared.events
 
 shared.update_check(false)

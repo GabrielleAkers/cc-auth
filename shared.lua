@@ -24,8 +24,10 @@ local update_check = function(is_client)
             fs.move(pwd, shell.resolve("../_auth"))
             shell.setDir(shell.resolve(".."))
             if is_client then
+                print("downloading client files" .. client_paste)
                 shell.run(client_paste)
             else
+                print("downloading client files" .. server_paste)
                 shell.run(server_paste)
                 if fs.isDir(shell.resolve("../_auth/persistence")) then
                     fs.move(shell.resolve("../_auth/persistence"), shell.resolve("."))
@@ -44,6 +46,7 @@ local update_check = function(is_client)
                 end
             end
         end
+        print("writing new version")
         local f = fs.open(check_file, "w+")
         f.write(version)
         f.close()

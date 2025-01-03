@@ -1,5 +1,5 @@
 {
-  utils = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/utils.lua",
-  client = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/client.lua",
-  shared = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/shared.lua",
+  utils = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_utils.lua",
+  client = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_client.lua",
+  shared = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_shared.lua",
 }

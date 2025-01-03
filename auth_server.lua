@@ -41,13 +41,13 @@ end
 
 local identities, hashes
 
-local write_to_disk = function(file)
+local write_to_disk = function(file, obj)
     local backups_dir = shell.resolve("./persistence")
     if not fs.isDir(backups_dir) then
         fs.makeDir(backups_dir)
     end
     local identities_file = fs.open(backups_dir .. file, "w")
-    identities_file.write(textutils.serialise(identities))
+    identities_file.write(textutils.serialise(obj))
     identities_file.close()
 end
 
@@ -79,7 +79,7 @@ local batch_update_identity = function(user, kv)
     for k, v in pairs(kv) do
         update_identity(user, k, v)
     end
-    write_to_disk("/identities")
+    write_to_disk("/identities", identities)
 end
 
 local handle_login = function(evt)
@@ -98,7 +98,7 @@ local handle_login = function(evt)
         end
     else
         hashes[evt.data.user] = sha.hash256(evt.data.user .. evt.data.password)
-        write_to_disk("/hashes")
+        write_to_disk("/hashes", hashes)
         batch_update_identity(evt.data.user, {
             user = evt.data.user,
             email = evt.data.user .. "@" .. shared.domain,

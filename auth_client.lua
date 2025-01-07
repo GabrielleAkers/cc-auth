@@ -1,3 +1,4 @@
+local sha = require("auth_sha")
 local shared = require("auth_shared")
 local events = shared.events
 
@@ -14,7 +15,7 @@ end
 local identity = nil
 
 local login = function(user, pass, on_invalid)
-    shared.send_msg(events.login, { user = user, password = pass }, server_id)
+    shared.send_msg(events.login, { user = user, password = sha.hash256(pass) }, server_id)
     local id, msg = rednet.receive(shared.protocol, timeout)
     if not id then
         return error("login timeout")

@@ -2,4 +2,5 @@
   utils = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_utils.lua",
   client = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_client.lua",
   shared = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_shared.lua",
+  sha = "https://raw.githubusercontent.com/GabrielleAkers/cc-auth/refs/heads/main/auth_sha.lua",
 }

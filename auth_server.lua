@@ -216,6 +216,8 @@ local process_events = function()
 end
 
 while run_server do
+    shared.clean_exit()
+    log("auth server started...")
     rednet.host(shared.protocol, shared.domain)
     parallel.waitForAny(
         process_os_events,

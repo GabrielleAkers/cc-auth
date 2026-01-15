@@ -84,23 +84,10 @@ local batch_update_identity = function(user, kv)
     write_to_disk("/identities", identities)
 end
 
-local migrate_v0_to_v1 = function(username)
-    local user = identities[username]
-    if not user["version"] then
-        log("migrating user " .. username .. " to  v1")
-        batch_update_identity(username, {
-            version = 1,
-            email = nil
-        })
-    end
-end
-
 local handle_login = function(evt)
     log("login attempt from " .. evt.data.user)
     if hashes[evt.data.user] then
         if hashes[evt.data.user] == sha.hash256(evt.data.user .. evt.data.password) then
-            migrate_v0_to_v1(evt.data.user)
-
             batch_update_identity(evt.data.user, {
                 last_pc = evt.sender,
                 last_login = os.epoch("utc"),
@@ -118,6 +105,7 @@ local handle_login = function(evt)
             version = latest_version,
             user = evt.data.user,
             last_pc = evt.sender,
+            email = evt.data.user .. "@" .. shared.domain,
             last_login = os.epoch("utc"),
             token = shared.random_id(16)
         })

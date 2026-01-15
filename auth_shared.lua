@@ -59,7 +59,7 @@ end
 local tw, th = term.getSize()
 
 local protocol = "auth"
-local domain = "auth.domain"
+local domain = "tuah"
 
 local session_length = 1800000
 

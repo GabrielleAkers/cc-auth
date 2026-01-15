@@ -108,11 +108,27 @@ local get_identity = function()
     return identity
 end
 
+local list_users = function()
+    shared.send_msg(events.list_users, {}, server_id)
+    local id, msg = rednet.receive(shared.protocol, timeout)
+    if not id then
+        return error("list timeout")
+    end
+    if id == server_id then
+        local userlist_msg = shared.parse_msg({ [3] = msg, [2] = id })
+        if userlist_msg.evt == events.list_users then
+            return userlist_msg.data
+        end
+    end
+    return error("list users failed")
+end
+
 return {
     get_identity = get_identity,
     login = login,
     logout = logout,
     update_info = update_info,
     refresh_session = refresh_session,
-    check_token = check_token
+    check_token = check_token,
+    list_users = list_users
 }

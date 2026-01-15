@@ -117,7 +117,8 @@ local events = {
     valid_token = "valid_token|",
     check_token = "check_token|",
     user_doesnt_exist = "user_doesnt_exist|",
-    logout = "logout|"
+    logout = "logout|",
+    list_users = "list_users|"
 }
 
 local events_valuemapped = {}

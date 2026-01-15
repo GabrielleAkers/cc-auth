@@ -16,6 +16,8 @@ local evt_queue = deque.new()
 
 local run_server = true
 
+local latest_version = 1
+
 local log = function(msg)
     print("[" .. os.time() .. "]" .. " " .. msg)
 end
@@ -100,9 +102,10 @@ local handle_login = function(evt)
         hashes[evt.data.user] = sha.hash256(evt.data.user .. evt.data.password)
         write_to_disk("/hashes", hashes)
         batch_update_identity(evt.data.user, {
+            version = latest_version,
             user = evt.data.user,
-            email = evt.data.user .. "@" .. shared.domain,
             last_pc = evt.sender,
+            email = evt.data.user .. "@" .. shared.domain,
             last_login = os.epoch("utc"),
             token = shared.random_id(16)
         })
@@ -193,12 +196,23 @@ local handle_logout = function(evt)
     })
 end
 
+local handle_list_users = function(evt)
+    log("userlist requested")
+
+    local users = {}
+    for _, v in pairs(identities) do
+        table.insert(users, v.user)
+    end
+    shared.send_msg(events.list_users, users, evt.sender)
+end
+
 local event_handlers = {
     [events.login] = handle_login,
     [events.update_info] = handle_update_info,
     [events.refresh_session] = handle_refresh_session,
     [events.check_token] = handle_check_token,
-    [events.logout] = handle_logout
+    [events.logout] = handle_logout,
+    [events.list_users] = handle_list_users
 }
 
 local process_events = function()

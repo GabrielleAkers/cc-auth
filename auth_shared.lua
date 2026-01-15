@@ -59,7 +59,7 @@ end
 local tw, th = term.getSize()
 
 local protocol = "auth"
-local domain = "tuah"
+local domain = "auth.domain"
 
 local session_length = 1800000
 
@@ -117,7 +117,8 @@ local events = {
     valid_token = "valid_token|",
     check_token = "check_token|",
     user_doesnt_exist = "user_doesnt_exist|",
-    logout = "logout|"
+    logout = "logout|",
+    list_users = "list_users|"
 }
 
 local events_valuemapped = {}
